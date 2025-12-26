@@ -1,0 +1,1718 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Portfolio — Pablo García Pastor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- FUENTES ELEGANTES -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ========= Variables ========= */
+    :root{
+      --leading:1.35;
+      --body:1.6rem;
+      --ease:cubic-bezier(0.16,1,0.3,1);
+
+      /* GRIS NIEVE */
+      --bg:#f7f7f5;
+      --panel:#ffffff;
+      --ink:#1a1a1a;
+      --muted:#888888;
+
+      --pill-bg:#0000000a;
+      --pill-ink:#1a1a1a;
+--pill-active-bg:#ffd400;   /* amarillo */
+--pill-active-ink:#1a1a1a;   /* texto negro */
+
+      --shadow:rgba(0,0,0,.08);
+      --header-h:9.6rem;
+
+      /* Libre */
+      --card-w:350px;
+
+      /* Grid */
+      --grid-gap:32px;
+      --grid-w: clamp(720px, calc(100vw / 1.5), 1100px);
+      --grid-text-h:220px;
+
+      /* FUENTES */
+      --serif:'Cormorant Garamond', Georgia, serif;
+      --sans:'Inter', system-ui, sans-serif;
+      --mono:ui-monospace, Menlo, monospace;
+    }
+
+    /* ========= Cursor global: círculo blanco ========= */
+    :root{
+      --cursor-circle:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'>\
+<circle cx='10' cy='10' r='6.5' fill='white' stroke='white' stroke-width='1.5'/></svg>") 10 10, auto;
+    }
+    *{cursor:var(--cursor-circle)}
+
+    /* ========= Base ========= */
+    *{box-sizing:border-box;margin:0;padding:0;color:inherit;text-decoration:inherit;font:inherit}
+    html{font-size:10px;background:var(--bg)}
+    @media (max-device-width:960px){html{font-size:8px}}
+    body{
+      font-family:var(--sans);
+      font-size:var(--body);
+      line-height:var(--leading);
+      color:var(--ink);
+      background:var(--bg);
+      overflow:hidden;
+      -webkit-user-select:none;
+      user-select:none;
+      touch-action:none;
+      transition:background-color .06s linear;
+    }
+
+    .pill{
+      display:inline-block;
+      background:var(--pill-bg);
+      color:var(--pill-ink);
+      border-radius:.3rem;
+      border:1px solid rgba(0,0,0,.12);
+      padding:.4rem 1.1rem .55rem;
+      margin:0 .4rem .4rem 0;
+      font-weight:300;
+      box-shadow:0 .4rem 1rem var(--shadow);
+      font-family:var(--sans);
+      letter-spacing:.02em;
+      transition:transform .2s var(--ease),background .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease)
+    }
+    .pill:hover{transform:translateY(-1px)}
+ .pill.active {
+  background: var(--pill-active-bg);
+  color: var(--pill-active-ink);
+  border-color: var(--pill-active-bg); /* mismo amarillo */
+
+}
+
+    header#top .pill{border:none;box-shadow:none;background:transparent;color:#1a1a1a}
+    header#top .pill:hover{color:#ffd400} /* dorado suave */
+header#top .pill.active {
+  color: #ffd400;        /* letras amarillas */
+  font-weight: 300;
+  background: transparent;   /* sin fondo */
+  border-color: transparent; /* sin borde */
+}
+
+    header#top{
+  position:fixed;
+  inset:0 0 auto 0; /* arriba, ancho completo */
+  z-index:100;
+  background:rgba(247,247,245,.92);
+  backdrop-filter:blur(6px);
+  padding:.6rem .6rem .4rem;
+  font-size:1.8rem;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  box-shadow:0 .4rem 1.2rem rgba(0,0,0,.04);
+  transform:translateY(-100%);           /* OCULTO por defecto */
+  transition:transform .35s var(--ease); /* animación deslizante */
+ font-family: var(--sans) !important;
+}
+
+
+header#top nav .pill {
+  font-weight: 300;
+}
+/* Cuando esté abierto */
+header#top.open{
+  transform:translateY(0);
+}
+
+    header .row{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem}
+    header .initial{justify-content:space-between}
+    header nav{display:flex;flex-wrap:wrap;align-items:center}
+    .now .viewing{
+      position:relative;
+      margin-right:1.6rem;
+      border-radius:.3rem;
+      background:#ffffff;
+      color:#1a1a1a;
+      border:1px solid rgba(0,0,0,.08);
+      font-family:var(--sans);
+      letter-spacing:.02em;
+      text-transform:uppercase
+    }
+    .now .viewing:after{
+      content:"";
+      position:absolute;
+      top:0;
+      right:.8px;
+      height:100%;
+      width:1.2em;
+      transform:translateX(100%);
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 70 100'><polygon fill='%23f7f7f5' points='0,0 70,50 0,100'/></svg>");
+      background-size:auto 100%
+    }
+
+   .viewport{
+  position:fixed;
+  inset:0; /* top/right/bottom/left:0 */
+  overflow:hidden;
+  touch-action:none;
+  transition:padding-top .35s var(--ease);
+}
+
+/* Menú cerrado: sin espacio arriba */
+body:not(.menu-open) .viewport{
+  padding-top:0;
+}
+
+/* Menú abierto: reserva el alto del header */
+body.menu-open .viewport{
+  padding-top:var(--header-h);
+}
+/* En modo grid, el viewport no añade colchón visual */
+body.mode-grid .viewport{
+  padding-top: 0;
+}
+
+
+.world{
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:transparent;
+  transform:translate(0,0);
+  will-change:transform,height,width;
+  touch-action:none;
+}
+
+
+    /* ========= Ventanas modo libre ========= */
+    .window{
+      position:absolute;
+      width:var(--card-w);
+      background:var(--panel);
+      border-radius:4px;
+      overflow:hidden;
+      box-shadow:0 1.2rem 2.4rem var(--shadow);
+      transition:box-shadow .2s var(--ease),filter .2s var(--ease),opacity .2s var(--ease),transform .2s var(--ease);
+      -webkit-user-select:none;
+      user-select:none;
+      touch-action:none;
+    }
+    .window:hover{box-shadow:0 1.6rem 3.2rem var(--shadow)}
+   .head {
+  background: #fafafa;
+  color: #1a1a1a;
+  padding: 8px 14px;
+  font-family: var(--sans);   /* ← mismo tipo que el resto */
+  font-weight: 350;           /* ← más fina, sin negrita */
+  font-size: 1.3rem;
+  letter-spacing: .02em;
+  text-align: ;
+  text-justify: inter-word;
+  text-transform: uppercase;  /* ← mayúsculas */
+}
+    .window img{
+      display:block;
+      width:100%;
+      height:150px;
+      object-fit:contain;
+      object-position:center;
+      background:#ffffff;
+      -webkit-user-drag:none;
+      user-drag:none;
+      filter:brightness(.95) contrast(1.05);
+    }
+    .foot{padding:6px 10px;font-size:1rem;color:var(--muted);font-weight:300;text-align:left}
+    .window.dim{filter:blur(2.4px) grayscale(40%) brightness(.85);opacity:.55}
+    .window.dim:hover{filter:none;opacity:1}
+
+    /* ========= Grid ========= */
+/* ===== GRID (más estrecho y adaptable) ===== */
+:root{
+  --grid-gap: 28px;
+  --grid-card-w: 290px;   /* controla lo “estrecho” */
+  --grid-card-h: 320px;   /* altura base */
+}
+
+.gridCard{
+  background:#ffffff;
+  color:#1a1a1a;
+  border:1px solid rgba(0,0,0,.06);
+  border-radius:4px;
+  box-shadow:0 1rem 2.2rem rgba(0,0,0,.06);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  min-width:0; /* importante en grids */
+}
+
+.gridWrap{
+  position:absolute;
+scrollbar-gutter: stable both-edges;
+overscroll-behavior: contain;
+
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+padding: 8px 6px;
+
+  display:grid;
+gap: 20px;
+ grid-template-columns: repeat(auto-fill, minmax(var(--grid-card-w), var(--grid-card-w)));
+justify-content: center;
+
+  grid-auto-rows: var(--grid-card-h);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  overscroll-behavior: contain; /* ← AÑADIR */
+}
+
+
+/* título */
+.gridHead{
+  background:#ffffff;
+  color:#1a1a1a;
+  font-family:var(--sans);
+  text-transform:uppercase;
+  letter-spacing:.02em;
+  font-weight:300;
+  font-size:1.2rem;
+  padding:.6rem 1rem;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  line-height:1.2;
+}
+
+
+/* imagen ocupa la parte “importante” */
+.gridMedia{
+  flex: 1 1 auto;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  min-height:0;
+}
+
+
+.gridMedia img{
+  width:100%;
+  height:100%;
+  object-fit:contain;     /* muestra entera */
+  object-position:center;
+  display:block;
+  background:#ffffff;
+}
+
+
+/* descripción más compacta para no comerse la imagen */
+.gridDesc{
+  flex: 0 0 auto;
+  padding:.6rem 1rem .8rem;
+  font-size:1.05rem;
+  color:var(--muted);
+  line-height:1.45;
+  font-family:var(--sans);
+  font-weight:300;
+  max-height: 28%;
+  overflow:auto;
+}
+
+    .mode-grid .window{display:none}
+    .mode-grid .gridWrap{display:grid}
+    .mode-free .gridWrap{display:none}
+
+    /* ========= Overlay desactivado ========= */
+    .psy{display:none}
+
+    /* ========= Estela de círculos ========= */
+    .trailDot{
+      position:fixed;
+      left:0;
+      top:0;
+      width:14px;
+      height:14px;
+      margin:-7px 0 0 -7px;
+      background:#ffffff;
+      border:1.5px solid #1a1a1a;
+      border-radius:50%;
+      pointer-events:none;
+      z-index:9999;
+      will-change:transform,opacity,filter;
+      filter:drop-shadow(0 0 6px rgba(0,0,0,.08));
+      opacity:0;
+    }
+    /* ===== Avisos ===== */
+   .gridHint,.freeHint{
+  position:fixed;
+  left:12px;
+  bottom:12px;
+  z-index:9999;
+  padding:.5rem .8rem;
+  font-family:var(--mono);
+  font-size:1.2rem;
+  letter-spacing:.02em;
+  background:rgba(255,255,255,.35);
+  color:rgba(0,0,0,.7);
+  display:none !important;
+  opacity:1;
+}
+
+/* Mostrar el mismo hint en modo libre y en modo grid */
+.mode-free .freeHint{
+  display:block !important;
+  animation:hintBlink 1.2s ease-in-out infinite alternate;
+}
+
+/* En grid NO se muestra */
+.mode-grid .freeHint{
+  display:none !important;
+}
+
+
+    @keyframes hintBlink{from{opacity:.45}to{opacity:1}}
+
+/* ===== Botón MUTE ===== */
+#btnMute{
+  position:fixed;
+  right:12px;
+  bottom:12px;
+  z-index:9999;
+  padding:.5rem 1.2rem;
+  font-family:var(--mono);
+  font-size:1.2rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.15);
+  background:rgba(255,255,255,.75);
+  color:rgba(0,0,0,.75);
+  box-shadow:0 .4rem 1rem rgba(0,0,0,.08);
+}
+
+/* Solo visible en modo libre */
+body.mode-free #btnMute{
+  display:inline-block;
+}
+body.mode-grid #btnMute,
+body.view-doc #btnMute{
+  display:none;
+}
+
+/* Estado silenciado */
+#btnMute.is-muted{
+  opacity:.6;
+}
+
+    /* ===== Contenedor del CV ===== */
+    .cvContainer{
+      position:fixed;
+      top:var(--header-h);
+      left:0;
+      right:0;
+      bottom:0;
+      background:#f7f7f5;
+      z-index:9;
+    }
+    .cvContainer iframe{width:100%;height:100%;border:none}
+
+
+/* Mostrar "Volver" solo en grid */
+.mode-grid #backRow {
+  display: block !important;
+}
+.mode-free #backRow {
+  display: none !important;
+}
+/* Ocultar filtros y reagrupar cuando se está viendo CV o TFG */
+body.view-doc #filters,
+body.view-doc #regroupRow {
+  display: none !important;
+}
+
+/* Flechas minimalistas */
+.gridArrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  cursor: pointer;
+  opacity: .45;
+  transition: opacity .2s;
+}
+.gridArrow:hover {
+  opacity: .9;
+}
+.gridArrow.left {
+  left: 12px;
+  border-width: 8px 12px 8px 0;
+  border-color: transparent #888888 transparent transparent;
+}
+.gridArrow.right {
+  right: 12px;
+  border-width: 8px 0 8px 12px;
+  border-color: transparent transparent transparent #888888;
+}
+/* ==== ICONO MENÚ HAMBURGUESA (FORZADO) ==== */
+.hamburger{
+  position:fixed;
+  top:1.2rem;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:110;
+  width:32px;              /* ancho del icono */
+  height:24px;             /* alto del icono */
+  padding:0;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:transparent;  /* sin fondo */
+  border:none;             /* sin borde */
+  cursor:pointer;
+}
+
+.hamburger span{
+  display:block;
+  width:24px;              /* largo de cada línea */
+  height:3px;              /* grosor de la línea */
+  margin:3px 0;            /* separación entre líneas */
+  background:#000000;      /* negro puro */
+  border-radius:2px;
+  opacity:1;
+}
+
+/* Animación a "X" cuando aria-expanded="true" */
+.hamburger[aria-expanded="true"] span:nth-child(1){
+  transform:rotate(45deg) translate(4px,5px);
+}
+.hamburger[aria-expanded="true"] span:nth-child(2){
+  opacity:0;
+}
+.hamburger[aria-expanded="true"] span:nth-child(3){
+  transform:rotate(-45deg) translate(5px,-5px);
+}
+
+/* =======================
+   CV en HTML (en la página)
+   ======================= */
+/* =======================
+   CV integrado en la web
+   ======================= */
+.cvContainer{
+  position:fixed;
+  top:var(--header-h);
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:9;
+
+  /* mismo fondo del site */
+  background:var(--bg);
+
+  overflow:auto;
+  -webkit-user-select:text;
+  user-select:text;
+  touch-action:auto;
+
+  /* un poco de aire como el grid */
+  padding: 16px 10px 40px;
+}
+/* En vez de “folio”, un panel sobrio integrado */
+.cvPage{
+  width: min(980px, calc(100vw - 24px));
+  margin: 0 auto;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.cvSection{
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.cvSection:last-child{ border-bottom:none; }
+
+/* Header con línea como en tu captura */
+.cvHeader{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:16px;
+  align-items:start;
+  padding-bottom:12px;
+  border-bottom:1px solid rgba(0,0,0,.10);
+}
+
+.cvAvatar{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  border:1px solid rgba(0,0,0,.10);
+
+  background-image: url("file:///C:/Users/PABLO/Desktop/PORTFOLIO%20FOTOS/avatar.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+
+
+.cvName{
+  font-size:2.0rem;
+  letter-spacing:.02em;
+  font-weight:500;
+  font-family: var(--sans);
+}
+
+.cvMeta{
+  margin-top:6px;
+  font-size:1.15rem;
+  line-height:1.45;
+  color:rgba(0,0,0,.72);
+  font-weight:300;
+}
+
+.cvSection{ padding-top:14px; }
+
+.cvH{
+  font-size:1.15rem;
+  font-weight:500;
+  text-transform:uppercase;
+  letter-spacing:.10em;
+  margin-bottom:8px;
+  font-family: var(--sans);
+}
+
+.cvP{
+  font-size:1.25rem;
+  line-height:1.55;
+  color:rgba(0,0,0,.84);
+  font-weight:300;
+}
+
+.cvItem{
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:14px;
+  padding:8px 0;
+}
+
+.cvWhen{
+  font-size:1.15rem;
+  color:rgba(0,0,0,.60);
+  font-weight:300;
+}
+
+.cvRole{
+  font-size:1.3rem;
+  font-weight:500;
+  color:rgba(0,0,0,.92);
+}
+
+.cvOrg{
+  font-size:1.2rem;
+  font-weight:300;
+  color:rgba(0,0,0,.72);
+  margin-top:2px;
+}
+
+.cvSub{
+  font-size:1.15rem;
+  font-weight:300;
+  color:rgba(0,0,0,.62);
+  margin-top:4px;
+}
+
+.cvSection .cvItem:has(.cvRole){
+  grid-template-columns: 1fr;
+}
+
+.cvLangGrid{
+  border-top:1px solid rgba(0,0,0,.08);
+  margin-top:6px;
+}
+.cvLangRow{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid rgba(0,0,0,.08);
+  font-size:1.2rem;
+  font-weight:300;
+}
+.cvLvl{ color:rgba(0,0,0,.90); font-weight:500; }
+
+@media (max-width:720px){
+  .cvItem{ grid-template-columns:1fr; }
+  .cvWhen{ color:rgba(0,0,0,.55); }
+}
+/* ===== Dots skills ===== */
+.skillsDots{
+  margin-top: 6px;
+  display: grid;
+  gap: 6px;
+}
+
+.skillRow{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.skillName{
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 1.25rem;
+  color: rgba(0,0,0,.92);
+}
+
+.skillDots{
+  display: grid;
+  grid-auto-flow: column;
+  gap: 6px;
+}
+
+.skillDot{
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.25);
+  background: rgba(0,0,0,.08);
+}
+
+.skillDot.is-on{
+  background: rgba(0,0,0,.92);
+  border-color: rgba(0,0,0,.92);
+}
+
+.skillDot.is-off{
+  background: rgba(0,0,0,.18);
+  border-color: rgba(0,0,0,.12);
+}
+
+  </style>
+<base target="_blank">
+<base target="_blank">
+<base target="_blank">
+</head>
+<body class="mode-free">
+  <div class="psy" id="psy"></div>
+
+<!-- Botón hamburguesa (siempre visible) -->
+<button id="btnMenu" class="hamburger" aria-label="Abrir menú" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<header id="top">
+  <div class="row initial">
+    <h1><a href="#" class="pill">Pablo García Pastor</a></h1>
+    <nav>
+      <a href="#" class="pill active" id="btnProyectos">Proyectos</a>
+      <a href="#" class="pill" id="btnCV">Currículum</a>
+      <a href="#" class="pill" id="btnTFG">TFG</a>
+    </nav>
+  </div>
+
+  <!-- Fila de filtros (solo visible en modo libre) -->
+  <div class="row" id="filters" style="margin-top:.4rem;">
+    <a href="#" class="pill active" data-filter="all">Todo</a>
+    <a href="#" class="pill" data-filter="Habitar">Habitar</a>
+    <a href="#" class="pill" data-filter="Restaurar">Restaurar</a>
+    <a href="#" class="pill" data-filter="Percibir">Percibir</a>
+  </div>
+
+<div class="row" id="regroupRow" style="margin-top:.4rem;">
+  <a href="#" id="btnRegroup" class="pill" title="Recolocar al centro con dispersión">Reagrupar</a>
+</div>
+
+
+  <!-- Fila "Modo libre" (solo visible en modo grid) -->
+  <div class="row" id="backRow" style="margin-top:.4rem; display:none;">
+    <a href="#" id="btnBackFree" class="pill">Modo libre</a>
+  </div>
+</header>
+<div id="cvContainer" class="cvContainer" style="display:none;">
+  <div class="cvPage" id="cvPage">
+    <header class="cvHeader">
+      <div class="cvAvatar"></div>
+      <div class="cvTitle">
+        <div class="cvName">Pablo García Pastor</div>
+        <div class="cvMeta">
+          Documento de identidad: 73134281P · Fecha de nacimiento: 28/01/2002<br>
+          Lugar de nacimiento: Zaragoza, España · Nacionalidad: Española<br>
+          Dirección: Calle Velilla de Ebro nº1 · Casa 11 · 50014 · Zaragoza (España)<br>
+          Dirección electrónica: 818640@unizar.es
+        </div>
+      </div>
+    </header>
+
+    <section class="cvSection">
+    
+      <p class="cvP">
+Arquitecto con titulación de Máster Habilitante, interesado en el espacio público, las percepciones sensoriales, la acústica, la rehabilitación y la restauración siempre desde una mirada ambiental atenta al contexto y al impacto de la arquitectura sobre el entorno social y construido.
+      </p>
+    </section>
+
+    <section class="cvSection">
+      <h3 class="cvH">Formación</h3>
+
+
+
+      <div class="cvItem">
+        <div class="cvWhen">2020 — 2025</div>
+        <div class="cvMain">
+          <div class="cvRole">Grado en Estudios en Arquitectura</div>
+          <div class="cvOrg">Universidad de Zaragoza · Zaragoza, España</div>
+        </div>
+      </div>
+
+      <div class="cvItem">
+        <div class="cvWhen">2024 — 2025</div>
+        <div class="cvMain">
+          <div class="cvRole">Programa de movilidad Erasmus+</div>
+          <div class="cvOrg">Politécnico de Torino · Italia</div>
+       
+        </div>
+      </div>
+
+      <div class="cvItem">
+        <div class="cvWhen">2025 — 2026</div>
+        <div class="cvMain">
+          <div class="cvRole">Master Universitario Habilitante en Arquitectura</div>
+          <div class="cvOrg">Universidad de Zaragoza · Zaragoza, España</div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="cvSection">
+      <h3 class="cvH">Experiencia laboral</h3>
+
+      <div class="cvItem">
+        <div class="cvWhen">2024</div>
+        <div class="cvMain">
+          <div class="cvRole">Prácticas curriculares</div>
+          <div class="cvOrg">Estudio de Arquitectura Cristina Cabello · Zaragoza, España</div>
+          <div class="cvSub">
+            Algunas de las actividades desarrolladas han sido el diseño de planos y la
+elaboración de documentación para proyectos y expedientes, visitas a obras de rehabilitación, estudio detallado de
+patologías de un edificio y la realización de certificados energéticos.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cvSection">
+      <div class="cvH">Competencias digitales</div>
+
+  <div class="skillsDots" aria-label="Nivel de programas">
+    <div class="skillRow" data-level="5">
+      <div class="skillName">AutoCAD</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="4">
+      <div class="skillName">InDesign</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="4">
+      <div class="skillName">Photoshop</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="3">
+      <div class="skillName">SketchUp</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="3">
+      <div class="skillName">V-Ray</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="3">
+      <div class="skillName">Revit</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="3">
+      <div class="skillName">Archicad</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="2">
+      <div class="skillName">Echo</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+
+    <div class="skillRow" data-level="2">
+      <div class="skillName">CE3X</div>
+      <div class="skillDots" aria-hidden="true"></div>
+    </div>
+  </div>
+    </section>
+
+    <section class="cvSection">
+      <h3 class="cvH">Premios y distinciones</h3>
+      <div class="cvItem">
+    
+        <div class="cvMain">
+          <div class="cvRole">Segunda mención local — Concurso Nacional Hispalyt 2023–2024</div>
+       
+        </div>
+      </div>
+    </section>
+
+    <section class="cvSection">
+      <h3 class="cvH">Competencias de idiomas</h3>
+      <div class="cvLangGrid">
+        <div class="cvLangRow">
+          <div class="cvLang">Español</div><div class="cvLvl">Nativo</div>
+        </div>
+        <div class="cvLangRow">
+          <div class="cvLang">Inglés</div><div class="cvLvl">B2</div>
+        </div>
+        <div class="cvLangRow">
+          <div class="cvLang">Italiano</div><div class="cvLvl">B1</div>
+        </div>
+      </div>
+    </section>
+  </div>
+ <iframe id="cvFrame" style="display:none; width:100%; height:100%; border:none;"></iframe>
+</div>
+
+
+
+  <div id="freeHint" class="freeHint" style="display: none;">Pulsa y arrastra para navegar</div>
+
+<button id="btnMute">MUTE</button>
+
+  <div class="viewport" id="viewport">
+    <div class="world" id="world">
+      <!-- ARTÍCULOS (sin cambios de contenido) -->
+<article class="window"
+ data-id="Vivienda para un músico"
+ data-cat="Habitar"
+ data-desc="Una vivienda concebida entre la exposición y el refugio. La arquitectura traduce su tensión entre la luz pública y la sombra íntima, un volumen abierto hacia la vida exterior y otro enterrado, silencioso y contemplativo. Geometrías marcadas dialogan con la topografía natural, mientras el estudio de grabación y el anfiteatro completan un conjunto que alterna aislamiento y comunión, introspección y espectáculo."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\5.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\6.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Vivienda para un músico</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ARTISTA\1.PNG">
+    <div class="foot">Habitar · Madrid · 2022</div>
+</article>
+
+<article class="window"
+ data-id="Mención Concurso Hispalyt 23/24"
+ data-cat="Percibir"
+ data-desc="El proyecto propone una biblioteca integrada en un entorno verde e introspectivo, concebida como un espacio de calma dentro de la ciudad. Los volúmenes se disponen siguiendo la Avenida Príncipe de Asturias, conectando el casco histórico con la zona universitaria. El bloque cercano al casco actúa como barrera y espacio comunitario, con cafetería, salas polivalentes y una fachada que puede funcionar como pantalla de proyección, mientras que el bloque principal alberga las zonas de lectura y descanso. La intervención se completa con un anfiteatro natural y senderos arbolados, que invitan al paseo y consolidan la biblioteca como centro vital del nuevo paisaje urbano. Una celosía cerámica protege al 
+edificio filtrando la luz proveniente del 
+sur y generando al mismo tiempo un 
+aspecto homogéneo en la fachada que 
+dota de identidad al edificio principal. "
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\10.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\9.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\6.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Mención Concurso Hispalyt 23/24</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\BIBLIOTECA\0.PNG">
+    <div class="foot">Percibir · Zamora · 2023</div>
+</article>
+
+<article class="window"
+ data-id="Cementerio de la Casa de Campo"
+ data-cat="Percibir"
+ data-desc="Un lugar de encuentro entre el ser humano y la naturaleza, donde la arquitectura actúa como mediadora del silencio y la luz. Muros curvos y fragmentados organizan el paisaje, generando transiciones entre lo natural y lo artificial. La capilla se considera el elemento central del proyecto, es un edificio de grandes muros curvos que 
+se entrelazan con la naturaleza intentando captar con sus formas cóncavas los ecos generados 
+por los distintos paisajes que la rodean, unificandolos en un espacio de calma y reflexión."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\5.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\7.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\8.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\9.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\11.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\10.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\1.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Cementerio de la Casa de Campo</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\CEMENTERIO\0.PNG">
+    <div class="foot">Percibir · Madrid · 2022</div>
+</article>
+
+<article class="window"
+ data-id="Rehabilitación del Castillo de Montjuïc"
+ data-cat="Restaurar"
+ data-desc="Una intervención que reinterpreta la memoria del lugar, transformando tres salas del Castillo de Montjüic en un espacio de reflexión y cultura. El proyecto propone la restauración de los materiales originales y la inserción de nuevos elementos reversibles en acero inoxidable, creando un diálogo entre la historia y la contemporaneidad. Las salas recuperadas albergan exposiciones, talleres y experiencias inmersivas que resignifican el pasado represivo del castillo en un centro para los derechos humanos y la memoria colectiva."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\MONTJUIC\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\MONTJUIC\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\MONTJUIC\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\MONTJUIC\1.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Rehabilitación del Castillo de Montjuïc</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\MONTJUIC\0.PNG">
+    <div class="foot">Restaurar · Barcelona · 2024</div>
+</article>
+
+<article class="window"
+ data-id="Residencia de estudiantes en Logroño"
+ data-cat="Habitar"
+ data-desc="El proyecto envuelve la Iglesia de San Bartolomé mediante dos volúmenes conectados que generan una plaza interior con el objetivo de oxigenar el entorno inmediato y favorecer la vida pública. Un basamento de hormigón prolonga la línea de los zócalos de piedra existentes, reforzando la continuidad material del conjunto urbano. Sobre él, un revestimiento de madera cubre el resto de la envolvente que se separa de las construcciones colindantes mediante una franja vertical retranqueada de vidrio, actuando como transición entre lo nuevo y lo preexistente. La envolvente interior, orientada hacia la iglesia se resuelve con una piel de vidrio protegida por lamas de madera verticales, contribuyendo a la unidad de los alzados que enmarcan la plaza."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\13.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\9.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\6.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\7.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\10.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\8.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\12.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\11.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\2.PNG|
+ style="left:12%; top:80px;">
+    
+    <div class="head">Residencia de estudiantes en Logroño</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESIDENCIA\0.PNG">
+    <div class="foot">Habitar · Logroño · 2023</div>
+</article>
+
+<article class="window"
+ data-id="Restauración en Ollomont"
+ data-cat="Restaurar"
+ data-desc="La intervención propone revitalizar el antiguo complejo minero de Ollomont, en el Valle de Aosta. El nuevo plan integra vivienda colectiva, mercado, centro cívico y espacio deportivo, configurando un centro de encuentro para la comunidad alpina. Tras analizar las patologías de una de sus fachadas, se procede a la intervención y a la propuesta de métodos de intervención. El proyecto se adapta a la topografía y al clima, recuperando el vínculo con el paisaje."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESTAURACIÓN\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESTAURACIÓN\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESTAURACIÓN\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESTAURACIÓN\2.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Restauración en Ollomont</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\RESTAURACIÓN\0.PNG">
+    <div class="foot">Restaurar · Valle de Aosta · 2024</div>
+</article>
+
+<article class="window"
+ data-id="Centro de Interpretación del río Aragón"
+ data-cat="Percibir"
+ data-desc="El proyecto se plantea como un límite natural entre el claro y el bosque, integrándose en la ladera mediante muros de piedra que emergen del terreno y cubiertas de acero corten que evocan las copas de los árboles. Un camino cubierto articula el recorrido entre los distintos espacios, exposición, conferencias, cafetería y albergue, generando una transición gradual desde lo público hacia lo íntimo. La arquitectura se funde con el paisaje, donde los muros y cubiertas guían al visitante en una experiencia continua de apertura y recogimiento."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\6.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\10.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\11.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\12.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\16.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\8.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\3.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Centro de Interpretación del río Aragón</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SAGUETA\0.PNG">
+    <div class="foot">Percibir · Canfranc · 2023</div>
+</article>
+
+<article class="window"
+ data-id="Ordenación Urbana en Sallent de Gállego"
+ data-cat="Habitar"
+ data-desc="La propuesta plantea un crecimiento orgánico y sostenible del municipio, en continuidad con el casco histórico y su topografía. La ordenación se estructura mediante franjas paralelas al río y una red de plazas y paseos peatonales que reactivan la vida urbana. Se prioriza la vivienda protegida frente a la estacional, complementada con equipamientos y espacios públicos que fomentan la convivencia. La relación entre la ribera y la zona edificada se resuelve mediante lenguas de tierra y escaleras urbanas, integrando las distintas cotas y reforzando la identidad paisajística del valle."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SALLENT\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SALLENT\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SALLENT\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SALLENT\4.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Ordenación Urbana en Sallent de Gállego</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SALLENT\0.PNG">
+    <div class="foot">Habitar · Valle de Tena · 2023</div>
+</article>
+
+<article class="window"
+ data-id="Intervención Urbana en Segovia"
+ data-cat="Restaurar"
+ data-desc="Una propuesta de reconfiguración del espacio público en torno al Acueducto de Segovia, donde la arquitectura actúa como mediadora entre la topografía y la historia. A través de nuevos recorridos y espacios de relación social, el proyecto recompone la relación entre el patrimonio y la ciudad viva. La materialidad pétrea, los desniveles y la textura del suelo evocan la memoria del lugar, transformando el vacío urbano en un paisaje habitable."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\8.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\9.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\7.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\5.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\3.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Intervención Urbana en Segovia</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\SEGOVIA\0.PNG">
+    <div class="foot">Restaurar · Segovia · 2024</div>
+</article>
+
+<article class="window"
+ data-id="Campus Universitario en Logroño"
+ data-cat="Habitar"
+ data-desc="Un conjunto universitario que une ciudad y naturaleza a través de una topografía habitada. Dos volúmenes longitudinales se encajan en el terreno, acompañando la pendiente hasta abrirse al parque. La arquitectura busca transparencia y sombra a partes iguales, conseguiomos un contraste entre la zona acristalada abierta al parque frente a unos espacios interiores opacos dedicados principalmente a 
+espacios servidores, realizandose pequeñas aberturas que permiten la entrada de luz cenital en zonas dedicadas al trabajo más 
+privado, pero manteniendo la ausencia de miradas hacia el exterior."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\10.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\9.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\6.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\7.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\8.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\12.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\13.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\5.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Campus Universitario en Logroño</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\UNIVERSIDAD\0.PNG">
+    <div class="foot">Habitar · Logroño · 2024</div>
+</article>
+
+<article class="window"
+ data-id="Escuela Secundaria en Baghere, Senegal"
+ data-cat="Habitar"
+ data-desc="Una arquitectura que reinterpreta la tradición constructiva local desde una visión contemporánea y sostenible. Muros de tierra apisonada, estructuras de madera y cubiertas de paja conforman un conjunto autosuficiente que se adapta al clima tropical y al ritmo de la comunidad. Dos bloques de aulas se abren a un patio central bajo los árboles. El proyecto busca reducir al mínimo el impacto ambiental, integrando materiales del lugar y técnicas de bajo consumo energético."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\5.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\6.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\7.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\9.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\3.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Escuela Secundaria en Baghere, Senegal</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\VERNACULAR\0.PNG">
+    <div class="foot">Habitar · Senegal · 2024</div>
+</article>
+
+<article class="window"
+ data-id="Propuesta urbana en Zúrich West"
+ data-cat="Habitar"
+ data-desc="Una estrategia de reurbanización que transforma el límite occidental del distrito en un tejido mixto y permeable, articulado por ejes peatonales y espacios verdes. La propuesta combina vivienda, equipamientos y terciario bajo un sistema de supermanzanas que favorece la vida de barrio y la continuidad paisajística con el río Limmat. La vegetación actúa como mediadora acústica y visual entre la ciudad y la industria, componiendo un paisaje urbano denso, ecológico y habitable."
+ data-images="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\0.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\6.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\1.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\3.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\2.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\4.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\5.PNG|C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\8.PNG"
+ style="left:12%; top:80px;">
+    
+    <div class="head">Propuesta urbana en Zúrich West</div>
+    <img src="C:\Users\PABLO\Desktop\PORTFOLIO FOTOS\ZURICH\0.PNG">
+    <div class="foot">Habitar · Zurich · 2021</div>
+</article>
+
+      <!-- RESTO DE ARTÍCULOS... -->
+
+      <div id="gridWrap" class="gridWrap"></div>
+    </div>
+  </div>
+
+  <div id="trailHost"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js"></script>
+  <script>
+    /* --- JAVASCRIPT SIN CAMBIOS --- */
+    const viewport = document.getElementById('viewport');
+    const world    = document.getElementById('world');
+    const gridWrap = document.getElementById('gridWrap');
+    const btnBack  = document.getElementById('btnBackFree');
+    const btnRegroup = document.getElementById('btnRegroup');
+    const freeHint = document.getElementById('freeHint');
+    freeHint.style.display = 'none'; // Oculta el mensaje al cargar la página
+const freeMsgs = [
+  "Pulsa y arrastra para navegar",
+  "Click sobre la imagen para ver más"
+];
+let freeIdx = 0;
+
+setInterval(() => {
+  if (!freeHint) return;
+
+  const body = document.body;
+
+  if (body.classList.contains('mode-free')) {
+    // En modo libre ALTERNAMOS los mensajes
+    freeIdx = (freeIdx + 1) % freeMsgs.length;
+    freeHint.textContent = freeMsgs[freeIdx];
+  } else if (body.classList.contains('mode-grid')) {
+    // En modo grid SIEMPRE el de arrastrar
+    freeHint.textContent = "Pulsa y arrastra para navegar";
+  }
+  // Si no estamos ni en free ni en grid (CV/TFG), el CSS lo tiene oculto.
+}, 2500);
+
+
+
+let mode = 'free', worldOffsetX = 0, worldOffsetY = 0;
+let currentFilter = 'all';
+let lastMode = 'free';   // ← nuevo: recordamos el último modo (free o grid)
+
+// ===== AUDIO DE FONDO EN MODO LIBRE =====
+const AUDIO_SRC = "file:///C:/Users/PABLO/Desktop/PORTFOLIO%20SALIDAS/audio.mp3";  // ← CAMBIA ESTO por tu mp3
+const bgAudio = new Audio(AUDIO_SRC);
+bgAudio.loop = true;
+
+let audioMuted = false;
+let audioEverStarted = false;
+
+function tryStartAudio(){
+  if (audioMuted) return;
+  if (mode !== 'free') return;
+
+  bgAudio.play()
+    .then(() => { audioEverStarted = true; })
+    .catch(() => {
+      // Autoplay bloqueado: lo volveremos a intentar en el siguiente click
+    });
+}
+
+// Primeras interacciones del usuario → intentar arrancar audio
+document.addEventListener('pointerdown', () => {
+  if (!audioEverStarted && mode === 'free' && !audioMuted) {
+    tryStartAudio();
+  }
+});
+
+// Según el modo (free / grid / docs) encendemos o apagamos
+function updateAudioByMode(){
+  if (mode === 'free' && !audioMuted) {
+    tryStartAudio();
+  } else {
+    bgAudio.pause();
+  }
+}
+
+// Botón MUTE
+const btnMute = document.getElementById('btnMute');
+btnMute.addEventListener('click', (e) => {
+  e.preventDefault();
+  audioMuted = !audioMuted;
+
+  if (audioMuted) {
+    bgAudio.pause();
+    btnMute.classList.add('is-muted');
+    btnMute.textContent = 'MUTED';
+  } else {
+    btnMute.classList.remove('is-muted');
+    btnMute.textContent = 'MUTE';
+    updateAudioByMode();
+  }
+});
+
+    let isPanning=false, startX=0, startY=0, startOffsetX=0, startOffsetY=0;
+    let bounds={minX:0,maxX:0,minY:0,maxY:0}, zCounter=20, dragMoved=false;
+    const windowsEls=[...document.querySelectorAll('.window')];
+
+    function disperseWindows(){
+      const vpW = viewport.clientWidth;
+      const vpH = viewport.clientHeight;
+      const cx = vpW * (0.45 + Math.random()*0.1);
+      const cy = vpH * (0.48 + Math.random()*0.1);
+      const baseR = 120, jitterR = 420;
+      const golden = Math.PI * (3 - Math.sqrt(5));
+      windowsEls.forEach((w, i) => {
+        const ang = i * golden + Math.random() * 0.35;
+        const r   = baseR + (i * 24) + Math.random() * jitterR;
+        const x = cx + Math.cos(ang) * r;
+        const y = cy + Math.sin(ang) * r;
+        w.style.left = `${Math.max(10, Math.min(vpW - 10 - w.offsetWidth,  x))}px`;
+        w.style.top  = `${Math.max(10, Math.min(vpH - 10 - w.offsetHeight, y))}px`;
+        w.setAttribute('data-x', 0);
+        w.setAttribute('data-y', 0);
+        w.style.transform = 'translate(0,0)';
+      });
+      worldOffsetX = 0; worldOffsetY = 0; computeBounds();
+    }
+
+    windowsEls.forEach(w => {
+      const imgs = (w.dataset.images || "").split("|").filter(Boolean);
+      if (imgs.length <= 1) return;
+      let idx = 0;
+      const imgEl = w.querySelector("img");
+      imgs.forEach(src => { const i = new Image(); i.src = src; });
+      imgEl.style.transition = "opacity .32s ease";
+      function changeImage(step) {
+        idx = (idx + step + imgs.length) % imgs.length;
+        imgEl.style.opacity = "0";
+        setTimeout(() => { imgEl.src = imgs[idx]; imgEl.style.opacity = "1"; }, 160);
+      }
+    });
+
+    const num=v=>parseFloat(v)||0;
+    const wLeft  =w=>w.offsetLeft  + num(w.getAttribute('data-x'));
+    const wRight =w=>w.offsetLeft+w.offsetWidth + num(w.getAttribute('data-x'));
+    const wTop   =w=>w.offsetTop   + num(w.getAttribute('data-y'));
+    const wBottom=w=>w.offsetTop+w.offsetHeight+ num(w.getAttribute('data-y'));
+    function spanFreeX(){let min=Infinity,max=-Infinity; windowsEls.forEach(w=>{min=Math.min(min,wLeft(w));max=Math.max(max,wRight(w));}); if(min===Infinity){min=0;max=0;} return {min,max};}
+    function spanFreeY(){let min=Infinity,max=-Infinity; windowsEls.forEach(w=>{min=Math.min(min,wTop(w));max=Math.max(max,wBottom(w));}); if(min===Infinity){min=0;max=0;} return {min,max};}
+
+    function computeBounds(){
+      const vpW=viewport.clientWidth, vpH=viewport.clientHeight, pad=40;
+      if(mode==='free'){
+        const {min:minXc,max:maxXc}=spanFreeX();
+        const {min:minYc,max:maxYc}=spanFreeY();
+        world.style.width  = Math.max(vpW, maxXc + pad) + 'px';
+        world.style.height = Math.max(vpH, maxYc + pad) + 'px';
+        bounds.minX = -(maxXc + pad);
+        bounds.maxX =  vpW - pad - minXc;
+        bounds.minY = -(maxYc + pad);
+        bounds.maxY =  vpH - pad - minYc;
+     }else{
+  // ===== GRID: el mundo NO crece, el scroll es del grid =====
+  world.style.width  = vpW + 'px';
+  world.style.height = vpH + 'px';
+
+  worldOffsetX = 0;
+  worldOffsetY = 0;
+  world.style.transform = 'translate(0px, 0px)';
+
+  bounds.minX = bounds.maxX = 0;
+  bounds.minY = bounds.maxY = 0;
+}
+
+      worldOffsetX=Math.max(bounds.minX,Math.min(bounds.maxX,worldOffsetX));
+      worldOffsetY=Math.max(bounds.minY,Math.min(bounds.maxY,worldOffsetY));
+      world.style.transform=`translate(${worldOffsetX}px, ${worldOffsetY}px)`;
+    }
+    window.addEventListener('resize', computeBounds);
+
+viewport.addEventListener('pointerdown', (e) => {
+  if (mode === 'grid') return;
+  // MODO LIBRE: no panear si haces click en una ventana
+  if (mode === 'free' && e.target.closest('.window')) return;
+
+  // MODO GRID: deja en paz las tarjetas (imagen + flechas)
+  if (mode === 'grid') {
+    // Si haces click en la imagen o en las flechas, NO activamos el arrastre
+    if (e.target.closest('.gridMedia') || e.target.closest('.gridArrow')) {
+      return;
+    }
+    // Si el texto está en modo seleccionable, tampoco paneamos
+    if (e.target.closest('.gridDesc.is-selectable')) return;
+  }
+
+  // En el resto de casos, sí arrastramos el mundo
+  isPanning = true;
+  startX = e.clientX;
+  startY = e.clientY;
+  startOffsetX = worldOffsetX;
+  startOffsetY = worldOffsetY;
+  viewport.setPointerCapture(e.pointerId);
+  e.preventDefault();
+});
+
+    viewport.addEventListener('pointermove',(e)=>{
+      if(!isPanning) return;
+      const dx=e.clientX-startX, dy=e.clientY-startY;
+      worldOffsetX=Math.max(bounds.minX,Math.min(bounds.maxX,startOffsetX+dx));
+      worldOffsetY=Math.max(bounds.minY,Math.min(bounds.maxY,startOffsetY+dy));
+      world.style.transform=`translate(${worldOffsetX}px, ${worldOffsetY}px)`;
+    });
+    function endPan(e){ if(!isPanning) return; isPanning=false; viewport.releasePointerCapture(e.pointerId); }
+    ['pointerup','pointercancel','pointerleave'].forEach(ev=>viewport.addEventListener(ev,endPan));
+
+windowsEls.forEach(w=>{
+  w.addEventListener('mouseenter', ()=>{ w.style.zIndex=++zCounter; });
+  w.addEventListener('click', ()=>{
+    if (dragMoved) return;
+
+    // Si estás filtrado en modo libre, entramos al grid con ESE filtro
+    const active = getActiveFilter();
+    enterGrid(w.dataset.id, active);
+  });
+});
+
+    interact('.window').draggable({
+      listeners:{
+        start(){dragMoved=false;},
+        move(ev){
+          const t=ev.target; const x=(num(t.getAttribute('data-x')))+ev.dx; const y=(num(t.getAttribute('data-y')))+ev.dy;
+          if(Math.abs(ev.dx)||Math.abs(ev.dy)) dragMoved=true;
+          t.style.transform=`translate(${x}px, ${y}px)`; t.setAttribute('data-x',x); t.setAttribute('data-y',y);
+        },
+        end(){setTimeout(()=>dragMoved=false,40); computeBounds();}
+      }
+    });
+
+const filterBar = document.getElementById('filters');
+
+function getActiveFilter(){
+  const a = filterBar?.querySelector('a.pill.active[data-filter]');
+  return (a && a.dataset.filter) ? a.dataset.filter : 'all';
+}
+
+function setActivePill(filterValue){
+  filterBar.querySelectorAll('a.pill[data-filter]').forEach(p => {
+    p.classList.toggle('active', p.dataset.filter === filterValue);
+  });
+}
+
+function applyFilterFree(f){
+  // Solo afecta al modo libre (dim)
+  windowsEls.forEach(w => {
+    w.classList.toggle('dim', !(f === 'all' || w.dataset.cat === f));
+  });
+}
+
+function applyFilterGrid(f){
+  // Solo afecta al modo grid (oculta tarjetas)
+  gridWrap.querySelectorAll('.gridCard').forEach(card => {
+    const ok = (f === 'all' || card.dataset.cat === f);
+    card.style.display = ok ? '' : 'none';
+  });
+}
+
+filterBar.addEventListener('click', e => {
+  const a = e.target.closest('a[data-filter]');
+  if (!a) return;
+  e.preventDefault();
+
+  filterBar.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  a.classList.add('active');
+
+  const f = a.dataset.filter;
+  currentFilter = f; // importante
+
+  if (mode === 'grid') {
+    setActivePill(f);
+    buildGrid(f, null); // reconstruyes grid con imágenes
+  applyFilterGrid(f); // <-- AÑADE ESTO (filtra las tarjetas recién creadas)
+  } else {
+    applyFilter(f);     // <-- ESTO es lo que te devuelve el blur en modo libre
+  }
+});
+
+function applyFilter(f){
+  currentFilter = f;
+  if (mode === 'grid') applyFilterGrid(f);
+  else applyFilterFree(f);
+}
+
+
+// Estado inicial
+setActivePill('all');
+applyFilterFree('all');
+
+   btnRegroup.addEventListener('click', e => {
+  e.preventDefault();
+  if (mode !== 'free') return;
+
+  const vpW = viewport.clientWidth;
+  const vpH = viewport.clientHeight;
+  const cardW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--card-w'));
+  const baseX = vpW / 2 - 0.5 * cardW;
+  const baseY = vpH / 2 - 120;
+
+  windowsEls.forEach(w => {
+    const ang = Math.random() * Math.PI * 2;
+    const r   = 40 + Math.random() * 160;
+    w.style.left = (baseX + Math.cos(ang) * r) + 'px';
+    w.style.top  = (baseY + Math.sin(ang) * r) + 'px';
+    w.setAttribute('data-x', 0);
+    w.setAttribute('data-y', 0);
+    w.style.transform = 'translate(0,0)';
+    w.style.zIndex = ++zCounter;
+  });
+
+  worldOffsetX = 0;
+  worldOffsetY = 0;
+  computeBounds();
+});
+function buildGrid(filter = 'all', firstId = null){
+  currentFilter = filter;
+
+  // Si el clicado no pertenece al filtro, evitamos grid vacío
+  if (firstId){
+    const clicked = windowsEls.find(w => w.dataset.id === firstId);
+    if (clicked && currentFilter !== 'all' && clicked.dataset.cat !== currentFilter) {
+      currentFilter = 'all';
+    }
+  }
+
+  const inFilter = (w) => (currentFilter === 'all' || w.dataset.cat === currentFilter);
+
+  const ordered = Array.from(windowsEls)
+    .filter(inFilter)
+    .sort((a, b) => {
+      if (firstId && a.dataset.id === firstId) return -1;
+      if (firstId && b.dataset.id === firstId) return 1;
+      return a.dataset.id.localeCompare(b.dataset.id);
+    });
+
+  gridWrap.innerHTML = '';
+
+  ordered.forEach(w => {
+    const imgs = (w.dataset.images || w.querySelector('img')?.src || '')
+      .split('|')
+      .filter(Boolean);
+
+    const card = document.createElement('article');
+    card.className = 'gridCard';
+    card.dataset.id = w.dataset.id;
+    card.dataset.cat = w.dataset.cat || '';
+    card.dataset.index = '0';
+    card._images = imgs;
+
+    const desc = w.dataset.desc || '';
+
+    card.innerHTML = `
+      <div class="gridHead">${w.querySelector('.head')?.textContent || 'Proyecto'}</div>
+      <div class="gridMedia">
+        <img src="${imgs[0] || ''}" alt="">
+        <div class="gridArrow left" data-dir="-1"></div>
+        <div class="gridArrow right" data-dir="1"></div>
+      </div>
+      <div class="gridDesc">${desc}</div>
+    `;
+
+    gridWrap.appendChild(card);
+  });
+
+  // Reenganchar listeners de flechas / precarga
+  gridWrap.querySelectorAll('.gridCard').forEach(card => {
+    const imgs = card._images || [];
+    const imgEl = card.querySelector('img');
+    if (!imgs.length || !imgEl) return;
+
+    let idx = 0;
+    imgs.forEach(src => { const i = new Image(); i.src = src; });
+
+    imgEl.style.transition = 'opacity .32s ease';
+
+    function change(step){
+      idx = (idx + step + imgs.length) % imgs.length;
+      imgEl.style.opacity = '0';
+      setTimeout(() => {
+        imgEl.src = imgs[idx];
+        imgEl.style.opacity = '1';
+        card.dataset.index = String(idx);
+      }, 160);
+    }
+
+    card.querySelectorAll('.gridArrow').forEach(arrow => {
+      arrow.addEventListener('click', e => {
+        e.preventDefault();
+        e.stopPropagation();
+        change(parseInt(arrow.dataset.dir, 10) || 1);
+      });
+    });
+  });
+}
+
+function enterGrid(firstId, requestedFilter = 'all') {
+  mode = 'grid';
+  document.body.classList.remove('mode-free');
+  document.body.classList.add('mode-grid');
+
+  btnRegroup.style.display = 'none';
+  btnBack.style.display = 'inline-block';
+
+  document.documentElement.style.setProperty('--bg', '#f7f7f5');
+  setTrailGrid();
+
+  // Si el proyecto clicado no coincide con el filtro solicitado,
+  // en vez de “abrir todo”, abrimos el grupo del proyecto clicado.
+  const clicked = windowsEls.find(w => w.dataset.id === firstId);
+  let effectiveFilter = requestedFilter;
+
+  if (clicked && requestedFilter !== 'all' && clicked.dataset.cat !== requestedFilter) {
+    effectiveFilter = clicked.dataset.cat || 'all';
+  }
+
+  // Sincroniza el pill activo en el menú
+  setActivePill(effectiveFilter);
+
+    // Construye el grid entero para el filtro efectivo (crea tarjetas + listeners)
+  buildGrid(effectiveFilter, firstId);
+
+
+  worldOffsetX = 0;
+  worldOffsetY = 0;
+  computeBounds();
+}
+
+
+btnBack.addEventListener('click', e => {
+  e.preventDefault();
+  mode = 'free';
+  document.body.classList.remove('mode-grid');
+  document.body.classList.add('mode-free');
+
+  updateAudioByMode();   // ← aquí
+
+  btnBack.style.display = 'none';
+  btnRegroup.style.display = 'inline-block';
+  setTrailFree();
+  disperseWindows();
+  applyFilter(currentFilter); // <-- NUEVO: recupera blur según filtro activo
+});
+
+
+const btnCV = document.getElementById('btnCV');
+const btnProyectos = document.getElementById('btnProyectos');
+const btnTFG = document.getElementById('btnTFG'); // Nuevo botón
+const cvContainer = document.getElementById('cvContainer');
+const cvPage  = document.getElementById('cvPage');
+const cvFrame = document.getElementById('cvFrame');
+
+function adjustCvTop() {
+  const header = document.getElementById('top');
+  const h = header ? header.offsetHeight : 0;
+  cvContainer.style.top = h + 'px';
+}
+window.addEventListener('resize', () => {
+  if (document.body.classList.contains('view-doc')) {
+    adjustCvTop();
+  }
+});
+
+btnCV.addEventListener('click', e => {
+  e.preventDefault();
+  lastMode = mode;
+
+  document.getElementById('viewport').style.display = 'none';
+  document.getElementById('trailHost').style.display = 'none';
+
+  cvContainer.style.display = 'block';
+
+  // Mostrar CV en HTML y ocultar PDF
+  cvPage.style.display = 'block';
+  cvFrame.style.display = 'none';
+  cvFrame.src = '';
+
+  btnCV.classList.add('active');
+  btnProyectos.classList.remove('active');
+  btnTFG.classList.remove('active');
+
+  document.body.classList.remove('mode-free', 'mode-grid');
+  document.body.classList.add('view-doc');
+
+  bgAudio.pause();
+  adjustCvTop();
+});
+
+
+btnTFG.addEventListener('click', e => {
+  e.preventDefault();
+  lastMode = mode;
+
+  document.getElementById('viewport').style.display = 'none';
+  document.getElementById('trailHost').style.display = 'none';
+
+  cvContainer.style.display = 'block';
+
+  // Ocultar CV en HTML y mostrar PDF
+  cvPage.style.display = 'none';
+  cvFrame.style.display = 'block';
+
+  // Ruta absoluta (Windows) - OJO: espacios codificados
+  cvFrame.src = "file:///C:/Users/PABLO/Desktop/PORTFOLIO%20FOTOS/TFG%20FINAL.pdf#page=1&zoom=page-fit&toolbar=0";
+
+  btnTFG.classList.add('active');
+  btnCV.classList.remove('active');
+  btnProyectos.classList.remove('active');
+
+  document.body.classList.remove('mode-free', 'mode-grid');
+  document.body.classList.add('view-doc');
+
+  bgAudio.pause();
+  adjustCvTop();
+});
+
+
+btnProyectos.addEventListener('click', e => {
+  e.preventDefault();
+
+  // Cerramos PDF y volvemos a mostrar el mundo
+  document.getElementById('viewport').style.display = 'block';
+  document.getElementById('trailHost').style.display = 'block';
+  cvContainer.style.display = 'none';
+ 
+  // Estado de pestañas
+  btnProyectos.classList.add('active');
+  btnCV.classList.remove('active');
+  btnTFG.classList.remove('active');
+
+  // Ya no estamos en vista doc
+  document.body.classList.remove('view-doc');
+
+  // Restauramos el modo anterior (free o grid)
+  if (lastMode === 'grid') {
+    mode = 'grid';
+    document.body.classList.add('mode-grid');
+    document.body.classList.remove('mode-free');
+    setTrailGrid();
+  } else {
+    mode = 'free';
+    document.body.classList.add('mode-free');
+    document.body.classList.remove('mode-grid');
+    setTrailFree();
+  }
+
+  updateAudioByMode();   // ← aquí
+
+  computeBounds();
+});
+
+
+
+
+
+
+
+    const trailHost=document.getElementById('trailHost');
+    const FREE_COUNT = 48, FREE_DELAY = 360;
+    let TRAIL_COUNT = FREE_COUNT, TOTAL_DELAY = FREE_DELAY, MAX_KEEP = Math.max(1200, FREE_DELAY*3);
+    let dots = [], history = [];
+
+    function rebuildDots(){
+      trailHost.innerHTML='';
+      dots.length=0;
+      for(let i=0;i<TRAIL_COUNT;i++){
+        const d=document.createElement('div');
+        d.className='trailDot';
+        const t = i/(TRAIL_COUNT-1 || 1);
+        d.style.opacity = (0.08 + Math.pow(t, 1.3)*0.92).toFixed(3);
+        trailHost.appendChild(d);
+        dots.push(d);
+      }
+    }
+    function setTrailFree(){ TRAIL_COUNT = FREE_COUNT; TOTAL_DELAY = FREE_DELAY; MAX_KEEP = Math.max(1200, TOTAL_DELAY*3); rebuildDots(); }
+    function setTrailGrid(){ TRAIL_COUNT = 0; TOTAL_DELAY = 0; MAX_KEEP = 400; rebuildDots(); }
+    setTrailFree();
+
+    window.addEventListener('pointermove', (e)=>{
+      history.push({t:performance.now(), x:e.clientX, y:e.clientY});
+      const cut=performance.now()-MAX_KEEP;
+      while(history.length && history[0].t<cut) history.shift();
+    }, {passive:true});
+
+    function sampleAt(timeMs){
+      if(history.length<2) return null;
+      let i=1;
+      while(i<history.length && history[i].t<timeMs) i++;
+      if(i<=1) return history[0];
+      if(i>=history.length) return history[history.length-1];
+      const a=history[i-1], b=history[i];
+      const r=(timeMs-a.t)/(b.t-a.t);
+      return {x:a.x+(b.x-a.x)*r, y:a.y+(b.y-a.y)*r};
+    }
+    function angleAt(){ return 0 }
+
+    function animateTrail(){
+      const now=performance.now();
+      if(TRAIL_COUNT>0){
+        const STEP = TRAIL_COUNT>1 ? (TOTAL_DELAY/(TRAIL_COUNT-1)) : 0;
+        for(let i=0;i<TRAIL_COUNT;i++){
+          const t=now - (TOTAL_DELAY - i*STEP);
+          const p=sampleAt(t);
+          if(p){
+            dots[i].style.transform = `translate(${p.x}px, ${p.y}px)`;
+          }
+        }
+      }
+      requestAnimationFrame(animateTrail);
+    }
+    animateTrail();
+
+// ===== Menú hamburguesa tipo overlay =====
+(function(){
+  const btnMenu   = document.getElementById('btnMenu');
+  const headerTop = document.getElementById('top');
+
+  if (!btnMenu || !headerTop) return;
+
+  btnMenu.addEventListener('click', () => {
+    const isOpen = headerTop.classList.toggle('open');
+    btnMenu.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('menu-open', isOpen);
+  });
+
+/*
+headerTop.addEventListener('click', (e) => {
+  const pill = e.target.closest('.pill');
+  if (!pill) return;
+  headerTop.classList.remove('open');
+  document.body.classList.remove('menu-open');
+  btnMenu.setAttribute('aria-expanded', 'false');
+});
+*/
+
+})();
+
+
+(function(){
+  const MAX = 5;
+  document.querySelectorAll('.skillRow').forEach(row=>{
+    const level = Math.max(0, Math.min(MAX, parseInt(row.dataset.level || "0", 10)));
+    const host = row.querySelector('.skillDots');
+    if(!host) return;
+
+    host.innerHTML = '';
+    for(let i=1;i<=MAX;i++){
+      const d = document.createElement('span');
+      d.className = 'skillDot ' + (i<=level ? 'is-on' : 'is-off');
+      host.appendChild(d);
+    }
+  });
+})();
+
+   
+    computeBounds();
+    disperseWindows();
+  </script>
+</body>
+</html>
