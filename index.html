@@ -42,10 +42,12 @@
     }
 
     /* ========= Cursor global: círculo blanco ========= */
-:root{
-  --cursor-circle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='6.5' fill='white' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 10 10, auto;
-}
-*{ cursor: var(--cursor-circle); }
+    :root{
+      --cursor-circle:url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'>\
+<circle cx='10' cy='10' r='6.5' fill='white' stroke='white' stroke-width='1.5'/></svg>") 10 10, auto;
+    }
+    *{cursor:var(--cursor-circle)}
 
     /* ========= Base ========= */
     *{box-sizing:border-box;margin:0;padding:0;color:inherit;text-decoration:inherit;font:inherit}
@@ -203,6 +205,7 @@ body.mode-grid .viewport{
   font-weight: 350;           /* ← más fina, sin negrita */
   font-size: 1.3rem;
   letter-spacing: .02em;
+  text-align: ;
   text-justify: inter-word;
   text-transform: uppercase;  /* ← mayúsculas */
 }
@@ -1556,8 +1559,7 @@ btnTFG.addEventListener('click', e => {
   cvFrame.style.display = 'block';
 
   // Ruta absoluta (Windows) - OJO: espacios codificados
-cvFrame.src = "https://drive.google.com/file/d/1bA_xH9Y2FPwiGNCcffKIgJSb5sCzLAzS/view";
-
+  cvFrame.src = "https://www.dropbox.com/scl/fi/sq18hdsfl4yexv41sgbf5/TTTT_compressed-1.pdf?rlkey=6nm30zkv11r7iviawdhs2p4dd&st=2v54oalq&dl=0";
 
   btnTFG.classList.add('active');
   btnCV.classList.remove('active');
